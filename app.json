@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/orders/orders",
+    "pages/my/my",
+    "pages/confirm/confirm"
+  ],
+  "window": {
+    "navigationBarTitleText": "家庭点餐",
+    "navigationBarBackgroundColor": "#e6d9de",
+    "navigationBarTextStyle": "black"
+  }
+}

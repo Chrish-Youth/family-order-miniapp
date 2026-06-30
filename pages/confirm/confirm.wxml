@@ -1,0 +1,97 @@
+<view class="container confirm-page">
+  <view class="confirm-hero">
+    <view class="confirm-hero-bg"></view>
+    <view class="confirm-hero-overlay"></view>
+    <view class="confirm-hero-content">
+      <view class="confirm-chip">CONFIRM MENU</view>
+      <view class="confirm-title">确认点餐</view>
+      <view class="confirm-subtitle">再看一眼今天的菜单搭配，然后完成下单</view>
+    </view>
+  </view>
+
+  <view class="confirm-body">
+    <view class="confirm-summary">
+      <view class="summary-card">
+        <view class="summary-num">{{cart.length}}</view>
+        <view class="summary-label">已选菜品</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-num">{{dishCount}}</view>
+        <view class="summary-label">总份数</view>
+      </view>
+    </view>
+
+    <view class="card preview-card">
+      <view class="section-title">已选菜品</view>
+
+      <view class="preview-strip" wx:if="{{cartPreview.length}}">
+        <view class="preview-images">
+          <image
+            wx:for="{{cartPreview}}"
+            wx:key="id"
+            class="preview-image"
+            src="{{item.image}}"
+            mode="aspectFill"
+          />
+        </view>
+        <view class="preview-info">
+          <view class="preview-title">{{cartSummary}}{{cart.length > 2 ? '等菜品' : ''}}</view>
+          <view class="preview-subtitle">共 {{dishCount}} 份，合计 ¥{{totalPrice}}</view>
+        </view>
+      </view>
+
+      <view wx:for="{{cart}}" wx:key="id" class="order-item">
+        <image class="item-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="item-main">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-desc" wx:if="{{item.desc}}">{{item.desc}}</view>
+        </view>
+        <view class="item-right">
+          <text class="count">x{{item.count}}</text>
+          <text class="price">¥{{item.price * item.count}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card form-card">
+      <view class="section-title">填写信息</view>
+
+      <view class="form-item">
+        <text class="form-label">点菜人</text>
+        <input
+          placeholder="请输入点菜人"
+          value="{{userName}}"
+          bindinput="onNameInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">用餐人数</text>
+        <input
+          type="number"
+          placeholder="请输入人数"
+          value="{{peopleCount}}"
+          bindinput="onPeopleInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">备注</text>
+        <textarea
+          placeholder="例如：少辣、不放葱"
+          value="{{remark}}"
+          bindinput="onRemarkInput"
+        ></textarea>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="total">
+      合计：<text class="price">¥{{totalPrice}}</text>
+    </view>
+    <button class="submit-btn" bindtap="submitOrder" loading="{{submitting}}" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '去下单'}}
+    </button>
+  </view>
+</view>

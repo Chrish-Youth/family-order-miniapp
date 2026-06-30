@@ -1,0 +1,16 @@
+<view class="custom-tabbar">
+  <view class="tab-item {{current === 'home' ? 'active' : ''}}" bindtap="goHome">
+    <view class="tab-icon">🏠</view>
+    <view class="tab-text">首页</view>
+  </view>
+
+  <view class="tab-item {{current === 'orders' ? 'active' : ''}}" bindtap="goOrders">
+    <view class="tab-icon">📋</view>
+    <view class="tab-text">订单</view>
+  </view>
+
+  <view class="tab-item {{current === 'my' ? 'active' : ''}}" bindtap="goMy">
+    <view class="tab-icon">👤</view>
+    <view class="tab-text">我的</view>
+  </view>
+</view>

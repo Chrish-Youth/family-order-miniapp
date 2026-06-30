@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "今日订单",
+  "usingComponents": {
+    "custom-tabbar": "/components/components/custom-tabbar/custom-tabbar"
+  }
+}

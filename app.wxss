@@ -1,0 +1,34 @@
+page {
+  background: #f8f4f5;
+  color: #514247;
+  font-size: 28rpx;
+}
+
+.container {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  box-shadow: 0 10rpx 28rpx rgba(190, 177, 182, 0.12);
+}
+
+.tag {
+  display: inline-block;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  background: #f6eff1;
+  color: #957f88;
+  font-size: 22rpx;
+}
+
+.muted {
+  color: #999;
+}
+
+.price {
+  color: #50a565;
+  font-weight: 700;
+}

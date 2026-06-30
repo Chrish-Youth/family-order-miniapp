@@ -1,0 +1,84 @@
+<view class="orders-page">
+  <view class="orders-hero">
+    <view class="orders-hero-bg"></view>
+    <view class="orders-hero-overlay"></view>
+    <view class="orders-hero-content">
+      <view class="orders-chip">TODAY'S MENU LOG</view>
+      <view class="orders-title">今日订单</view>
+      <view class="orders-subtitle">查看今天已经提交的点餐记录</view>
+    </view>
+  </view>
+
+  <view class="orders-body">
+    <block wx:if="{{orderList.length > 0}}">
+      <view class="orders-summary">
+        <view class="summary-card">
+          <view class="summary-num">{{orderList.length}}</view>
+          <view class="summary-label">今日订单</view>
+        </view>
+        <view class="summary-card">
+          <view class="summary-num">{{todayTotal}}</view>
+          <view class="summary-label">合计金额</view>
+        </view>
+      </view>
+
+      <view class="order-card" wx:for="{{orderList}}" wx:key="id">
+        <view class="order-top">
+          <view class="order-user-wrap">
+            <view class="order-avatar">🎀</view>
+            <view>
+              <view class="order-user">{{item.userName || '未命名用户'}}</view>
+              <view class="order-time">{{item.time}}</view>
+            </view>
+          </view>
+          <view class="order-count">{{item.people || '1'}}人</view>
+        </view>
+
+        <view class="order-preview" wx:if="{{item.previewList.length}}">
+          <view class="preview-images">
+            <image
+              wx:for="{{item.previewList}}"
+              wx:key="id"
+              class="preview-image"
+              src="{{item.image}}"
+              mode="aspectFill"
+            />
+            <view class="preview-more" wx:if="{{item.moreDishCount > 0}}">+{{item.moreDishCount}}</view>
+          </view>
+          <view class="preview-text">
+            <view class="preview-title">{{item.dishSummary}}{{item.cart.length > 2 ? '等菜品' : ''}}</view>
+            <view class="preview-subtitle">共 {{item.dishTotal}} 份菜品</view>
+          </view>
+        </view>
+
+        <view class="order-dishes">
+          <view class="order-dish" wx:for="{{item.cart}}" wx:key="id">
+            <view class="dish-left-wrap">
+              <text class="dish-left">{{item.name}} × {{item.count}}</text>
+              <text class="dish-desc" wx:if="{{item.desc}}">{{item.desc}}</text>
+            </view>
+            <text class="dish-right">¥{{item.price * item.count}}</text>
+          </view>
+        </view>
+
+        <view class="order-remark" wx:if="{{item.remark}}">
+          备注：{{item.remark}}
+        </view>
+
+        <view class="order-total">
+          <text>合计</text>
+          <text class="total-price">¥{{item.totalPrice}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-box">
+      <view class="empty-sticker">📋</view>
+      <view class="empty-title">今天还没有订单</view>
+      <view class="empty-desc">先去首页选几道喜欢的菜，这里就会变成你的甜心订单簿。</view>
+      <view class="empty-btn" bindtap="goHome">去首页看看</view>
+    </view>
+  </view>
+
+  <custom-tabbar current="orders"></custom-tabbar>
+</view>

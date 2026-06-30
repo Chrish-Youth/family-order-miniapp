@@ -1,0 +1,120 @@
+<view class="my-page">
+  <view class="my-hero">
+    <view class="my-hero-bg"></view>
+    <view class="my-hero-content">
+      <view class="my-chip">HELLO KITTY USER</view>
+      <view class="profile-card">
+        <view class="avatar">🎀</view>
+        <view class="profile-info">
+          <view class="profile-name">家庭点餐用户</view>
+          <view class="profile-desc">记录今天的点菜情况，也把收藏的小菜单都留在这里。</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="my-body">
+    <view class="stats-row">
+      <view class="stat-card">
+        <view class="stat-badge">订单</view>
+        <view class="stat-num">{{orderCount}}</view>
+        <view class="stat-label">今日订单</view>
+      </view>
+
+      <view class="stat-card">
+        <view class="stat-badge alt">份数</view>
+        <view class="stat-num">{{dishCount}}</view>
+        <view class="stat-label">已点份数</view>
+      </view>
+    </view>
+
+    <view class="stats-row compact-row">
+      <view class="stat-card compact-card">
+        <view class="stat-badge green-badge">金额</view>
+        <view class="stat-num">¥{{todayTotal}}</view>
+        <view class="stat-label">今日合计</view>
+      </view>
+      <view class="stat-card compact-card">
+        <view class="stat-badge soft-badge">最近</view>
+        <view class="stat-num">{{latestOrder ? latestOrder.people || '1' : 0}}</view>
+        <view class="stat-label">最近用餐人数</view>
+      </view>
+    </view>
+
+    <view class="latest-card" wx:if="{{latestOrder}}">
+      <view class="latest-head">
+        <view>
+          <view class="latest-title">最近一笔点餐</view>
+          <view class="latest-time">{{latestOrder.time}}</view>
+        </view>
+        <view class="latest-total">¥{{latestOrder.totalPrice}}</view>
+      </view>
+
+      <view class="latest-preview">
+        <view class="latest-images">
+          <image
+            wx:for="{{latestOrder.previewList}}"
+            wx:key="id"
+            class="latest-image"
+            src="{{item.image}}"
+            mode="aspectFill"
+          />
+        </view>
+        <view class="latest-info">
+          <view class="latest-user">{{latestOrder.userName}}</view>
+          <view class="latest-desc">{{latestOrder.previewText}}{{latestOrder.cart.length > 2 ? '等菜品' : ''}}</view>
+        </view>
+      </view>
+
+      <view class="latest-entry" bindtap="goOrders">去订单页查看完整内容</view>
+    </view>
+
+    <view class="menu-list">
+      <view class="menu-item" bindtap="goOrders">
+        <view class="menu-left">
+          <view class="menu-icon">📋</view>
+          <view>
+            <view class="menu-text">查看订单</view>
+            <view class="menu-subtext">快速查看今天已提交的菜单记录</view>
+          </view>
+        </view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="clearOrderList">
+        <view class="menu-left">
+          <view class="menu-icon">🧾</view>
+          <view>
+            <view class="menu-text">清空订单记录</view>
+            <view class="menu-subtext">把练习产生的订单数据重置干净</view>
+          </view>
+        </view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="clearCartData">
+        <view class="menu-left">
+          <view class="menu-icon">🍽</view>
+          <view>
+            <view class="menu-text">清空购物车数据</view>
+            <view class="menu-subtext">重新开始搭配今天想吃的菜单</view>
+          </view>
+        </view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item info-item">
+        <view class="menu-left">
+          <view class="menu-icon">ℹ️</view>
+          <view>
+            <view class="menu-text">家庭点餐小程序</view>
+            <view class="menu-subtext">当前为 Hello Kitty 厨房练习版风格</view>
+          </view>
+        </view>
+        <view class="menu-desc">练习版</view>
+      </view>
+    </view>
+  </view>
+
+  <custom-tabbar current="my"></custom-tabbar>
+</view>

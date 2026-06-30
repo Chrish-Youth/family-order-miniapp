@@ -1,0 +1,143 @@
+<view class="home-page">
+  <view class="hero-image">
+    <image class="hero-bg-image" src="/assets/hero-bg.jpg" mode="aspectFill"></image>
+    <view class="hero-overlay"></view>
+    <view class="hero-shell">
+      <view class="hero-top">
+        <view class="hero-actions">
+          <view class="hero-action">●●●</view>
+        </view>
+      </view>
+
+      <view class="shop-header">
+        <view class="shop-avatar">
+          <image class="shop-avatar-image" src="/assets/shop-cover.png" mode="aspectFill"></image>
+        </view>
+        <view class="shop-info">
+          <view class="shop-name">家庭点餐小屋</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="main-panel">
+    <view class="content-area card-shell">
+      <view class="left-nav">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="nav-item {{currentCategory === item.id ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="changeCategory"
+        >
+          <view class="nav-icon">{{item.icon}}</view>
+          <view class="nav-text">{{item.name}}</view>
+        </view>
+      </view>
+
+      <view class="right-list">
+        <block wx:for="{{dishList}}" wx:key="id">
+          <view wx:if="{{item.category === currentCategory}}" class="dish-card">
+            <view class="dish-thumb-wrap">
+              <view class="dish-badge" wx:if="{{item.isHot}}">推荐</view>
+              <view class="dish-thumb">
+                <image class="dish-thumb-image" src="{{item.image}}" mode="aspectFill"></image>
+                <view class="dish-thumb-mask"></view>
+                <view class="dish-thumb-bow">🎀</view>
+                <view class="dish-thumb-name">{{item.shortName}}</view>
+              </view>
+            </view>
+
+            <view class="dish-center">
+              <view class="dish-name-row">
+                <view class="dish-name">{{item.name}}</view>
+                <view class="dish-tag" wx:if="{{item.isHot}}">人气</view>
+              </view>
+              <view class="dish-desc">{{item.desc}}</view>
+              <view class="dish-rating">★★★★★</view>
+
+              <view class="dish-bottom">
+                <view class="dish-price">¥{{item.price}}</view>
+
+                <view class="stepper" wx:if="{{item.count > 0}}">
+                  <view class="step-btn" bindtap="minusCount" data-id="{{item.id}}">-</view>
+                  <view class="step-count">{{item.count}}</view>
+                  <view class="step-btn plus-btn" bindtap="plusCount" data-id="{{item.id}}">+</view>
+                </view>
+
+                <view class="dish-add" wx:else bindtap="plusCount" data-id="{{item.id}}">+</view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-cart" bindtap="openCartPopup">
+    <view class="bottom-cart-left">
+      <view class="bottom-cart-icon">
+        <view class="tray-icon">🍽</view>
+      </view>
+      <view class="bottom-cart-text">
+        <view class="bottom-cart-title">已选 {{totalCount}} 份</view>
+        <view class="bottom-cart-desc">今天的甜心菜单 · 合计 ¥{{totalPrice}}</view>
+      </view>
+    </view>
+    <view class="bottom-cart-btn" catchtap="openCartPopup">去结算</view>
+  </view>
+
+  <view
+    wx:if="{{showCartPopup}}"
+    class="cart-mask {{popupClosing ? 'cart-mask-hide' : 'cart-mask-show'}}"
+    bindtap="closeCartPopup"
+  ></view>
+
+  <view
+    wx:if="{{showCartPopup}}"
+    class="cart-popup {{popupClosing ? 'cart-popup-hide' : 'cart-popup-show'}}"
+  >
+    <view class="cart-popup-header">
+      <view class="cart-popup-title">购物车</view>
+      <view class="cart-clear" bindtap="clearCart">清空</view>
+    </view>
+
+    <scroll-view class="cart-popup-list" scroll-y="true">
+      <view class="cart-popup-item" wx:for="{{cartList}}" wx:key="id">
+        <view class="cart-popup-thumb">
+          <image class="cart-popup-thumb-image" src="{{item.image}}" mode="aspectFill"></image>
+        </view>
+        <view class="cart-popup-info">
+          <view class="cart-popup-name">{{item.name}}</view>
+          <view class="cart-popup-desc">{{item.desc}}</view>
+          <view class="cart-popup-price">¥{{item.price}}</view>
+        </view>
+
+        <view class="stepper">
+          <view class="step-btn" bindtap="minusCount" data-id="{{item.id}}">-</view>
+          <view class="step-count">{{item.count}}</view>
+          <view class="step-btn plus-btn" bindtap="plusCount" data-id="{{item.id}}">+</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="cart-popup-footer">
+      <view class="cart-popup-total">
+        合计：<text class="popup-total-price">¥{{totalPrice}}</text>
+      </view>
+      <button class="cart-popup-btn" catchtap="goConfirm">去下单</button>
+    </view>
+  </view>
+
+  <view
+    wx:if="{{flyBall.show}}"
+    class="fly-ball"
+    style="left: {{flyBall.x}}px; top: {{flyBall.y}}px;"
+    animation="{{flyBall.animationData}}"
+  >
+    <view class="fly-ball-core">+</view>
+    <view class="fly-ball-glow"></view>
+  </view>
+
+  <custom-tabbar current="home"></custom-tabbar>
+</view>
