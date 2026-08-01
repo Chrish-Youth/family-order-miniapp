@@ -327,7 +327,10 @@ Page({
   },
 
   startFlyBall(e) {
-    const { windowWidth, windowHeight } = wx.getSystemInfoSync()
+    const windowInfo = wx.getWindowInfo
+      ? wx.getWindowInfo()
+      : wx.getSystemInfoSync()
+    const { windowWidth, windowHeight } = windowInfo
 
     const startX = e.detail.x || 300
     const startY = e.detail.y || 500

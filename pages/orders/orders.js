@@ -26,7 +26,12 @@ Page({
   },
 
   async onShow() {
-    const orderList = (await fetchOrders()).map(buildOrderViewModel)
+    const now = new Date()
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+    const endOfToday = startOfToday + 24 * 60 * 60 * 1000
+    const orderList = (await fetchOrders())
+      .filter(order => order.createdAt >= startOfToday && order.createdAt < endOfToday)
+      .map(buildOrderViewModel)
     const todayTotal = orderList.reduce((sum, item) => sum + Number(item.totalPrice || 0), 0)
 
     this.setData({

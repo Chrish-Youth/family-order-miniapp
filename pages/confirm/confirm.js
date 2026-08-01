@@ -15,7 +15,10 @@ Page({
 
   onLoad() {
     const cart = wx.getStorageSync('currentCart') || []
-    const totalPrice = wx.getStorageSync('currentTotalPrice') || 0
+    const totalPrice = cart.reduce(
+      (sum, item) => sum + Number(item.price || 0) * Number(item.count || 0),
+      0
+    )
     const dishCount = cart.reduce((sum, item) => sum + Number(item.count || 0), 0)
     const cartPreview = cart.slice(0, 3)
     const cartSummary = cart
@@ -55,9 +58,30 @@ Page({
       return
     }
 
-    if (!this.data.userName) {
+    const userName = this.data.userName.trim()
+    const peopleCount = this.data.peopleCount
+      ? Number(this.data.peopleCount)
+      : 1
+
+    if (!this.data.cart.length) {
+      wx.showToast({
+        title: '购物车为空，请先选菜',
+        icon: 'none'
+      })
+      return
+    }
+
+    if (!userName) {
       wx.showToast({
         title: '请填写点菜人',
+        icon: 'none'
+      })
+      return
+    }
+
+    if (!Number.isInteger(peopleCount) || peopleCount <= 0) {
+      wx.showToast({
+        title: '请输入正确的用餐人数',
         icon: 'none'
       })
       return
@@ -69,9 +93,9 @@ Page({
 
     const order = {
       id: Date.now(),
-      userName: this.data.userName,
-      people: this.data.peopleCount || '1',
-      remark: this.data.remark,
+      userName,
+      people: String(peopleCount),
+      remark: this.data.remark.trim(),
       cart: this.data.cart.map(item => ({
         ...item
       })),
@@ -80,11 +104,11 @@ Page({
     }
 
     try {
-      await saveOrder(order)
+      const result = await saveOrder(order)
 
       wx.showToast({
-        title: '提交成功',
-        icon: 'success'
+        title: result.synced ? '提交并同步成功' : '已保存到本机',
+        icon: result.synced ? 'success' : 'none'
       })
 
       setTimeout(() => {

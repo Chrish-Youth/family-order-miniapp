@@ -10,10 +10,16 @@ Page({
 
   async onShow() {
     const orderList = await fetchOrders()
+    const now = new Date()
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+    const endOfToday = startOfToday + 24 * 60 * 60 * 1000
+    const todayOrders = orderList.filter(
+      order => order.createdAt >= startOfToday && order.createdAt < endOfToday
+    )
 
     let dishCount = 0
     let todayTotal = 0
-    orderList.forEach(order => {
+    todayOrders.forEach(order => {
       todayTotal += Number(order.totalPrice || 0)
       ;(order.cart || []).forEach(item => {
         dishCount += item.count || 0
@@ -32,7 +38,7 @@ Page({
       : null
 
     this.setData({
-      orderCount: orderList.length,
+      orderCount: todayOrders.length,
       dishCount,
       todayTotal,
       latestOrder
@@ -59,7 +65,17 @@ Page({
       content: '确定要清空所有订单记录吗？',
       success: async res => {
         if (res.confirm) {
-          await clearOrders()
+          const result = await clearOrders()
+
+          if (result.error) {
+            wx.showToast({
+              title: '云端清理失败，请重试',
+              icon: 'none'
+            })
+            await this.onShow()
+            return
+          }
+
           this.setData({
             orderCount: 0,
             dishCount: 0,
@@ -67,7 +83,7 @@ Page({
             latestOrder: null
           })
           wx.showToast({
-            title: '订单已清空',
+            title: result.cloudCleared ? '订单已清空' : '本地订单已清空',
             icon: 'success'
           })
         }
