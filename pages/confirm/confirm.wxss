@@ -1,7 +1,7 @@
 .confirm-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #fff8fa 0%, #fffefe 100%);
-  padding-bottom: 144rpx;
+  padding-bottom: calc(176rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
 }
 
@@ -252,6 +252,7 @@
 
 .bottom-bar {
   position: fixed;
+  z-index: 100;
   left: 0;
   right: 0;
   bottom: 0;

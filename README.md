@@ -2,6 +2,14 @@
 
 一个基于微信小程序原生框架开发的家庭点菜项目，提供菜品分类、购物车、订单确认、订单记录和个人统计等功能。
 
+## 真机预览
+
+<p align="center">
+  <img src="docs/screenshots/home.jpg" alt="点菜首页" width="30%" />
+  <img src="docs/screenshots/cart.jpg" alt="购物车" width="30%" />
+  <img src="docs/screenshots/confirm.jpg" alt="确认订单" width="30%" />
+</p>
+
 ## 功能
 
 - 分类浏览菜品并调整数量
